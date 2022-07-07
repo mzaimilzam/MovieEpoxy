@@ -18,13 +18,21 @@ import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-/** Activity binding delegate, may be used since onCreate up to onDestroy (inclusive) */
+/** Activity binding delegate, may be used since onCreate up to onDestroy (inclusive)
+ *
+ * how to use :
+ * private val binding by viewBinding(ActivityMainBinding::inflate)
+ * */
 inline fun <T : ViewBinding> AppCompatActivity.viewBinding(crossinline factory: (LayoutInflater) -> T) =
     lazy(LazyThreadSafetyMode.NONE) {
         factory(layoutInflater)
     }
 
-/** Fragment binding delegate, may be used since onViewCreated up to onDestroyView (inclusive) */
+/** Fragment binding delegate, may be used since onViewCreated up to onDestroyView (inclusive)
+ *
+ * how to use :
+ * private val binding by viewBinding(FragmentBinding::bind)
+ * */
 fun <T : ViewBinding> Fragment.viewBinding(factory: (View) -> T): ReadOnlyProperty<Fragment, T> =
     object : ReadOnlyProperty<Fragment, T>, DefaultLifecycleObserver {
         private var binding: T? = null
@@ -44,7 +52,14 @@ fun <T : ViewBinding> Fragment.viewBinding(factory: (View) -> T): ReadOnlyProper
     }
 
 /** Binding delegate for DialogFragments implementing onCreateDialog (like Activities, they don't
- *  have a separate view lifecycle), may be used since onCreateDialog up to onDestroy (inclusive) */
+ *  have a separate view lifecycle), may be used since onCreateDialog up to onDestroy (inclusive)
+ *
+ *  how to use :
+ *
+ *  private val binding by viewBinding(FragmentBinding::inflate)
+ *  or
+ *  private val binding by viewBinding(FragmentBinding::bind)
+ *  */
 inline fun <T : ViewBinding> DialogFragment.viewBinding(crossinline factory: (LayoutInflater) -> T) =
     lazy(LazyThreadSafetyMode.NONE) {
         factory(layoutInflater)
