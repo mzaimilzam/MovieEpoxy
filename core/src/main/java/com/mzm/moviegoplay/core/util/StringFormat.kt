@@ -13,3 +13,12 @@ fun stringEmpty(
     }
     return text
 }
+
+fun tmdbImageUrl(
+    text: String?
+): String {
+    if (text == "" || text == null || text == "null" || text.isNullOrEmpty()) {
+        return ""
+    }
+    return Constants.BASE_URL_IMAGE + text
+}

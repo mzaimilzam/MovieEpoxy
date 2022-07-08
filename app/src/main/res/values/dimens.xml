@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="carousel_item_width">240dp</dimen>
+<!--    <dimen name="carousel_item_width">240dp</dimen>-->
+<!--    <dimen name="carousel_item_height">160dp</dimen>-->
+    <dimen name="carousel_item_width">200dp</dimen>
     <dimen name="carousel_item_height">160dp</dimen>
 
     <dimen name="dimen_header_36">36dp</dimen>

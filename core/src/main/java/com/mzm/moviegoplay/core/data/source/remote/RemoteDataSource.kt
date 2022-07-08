@@ -3,8 +3,10 @@ package com.mzm.moviegoplay.core.data.source.remote
 import com.mzm.moviegoplay.core.data.source.remote.network.ApiService
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_movie.ListPopularMovieResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_tv.ListPopularTVResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,23 +23,29 @@ class RemoteDataSource @Inject constructor(
     suspend fun popularMovie(): Flow<ApiResponse<ListPopularMovieResponse?>> {
         return flow {
             try {
-                val response = apiService.getPopularMovie()
-                val data = apiService.getPopularMovie().body()
-                if (response.isSuccessful) {
-                    if (data?.results != null) {
-                        emit(ApiResponse.Success(data))
-                    } else {
-                        emit(ApiResponse.Empty)
-                    }
-                } else {
-                    emit(ApiResponse.Error(response.code().toString()))
+                val data = apiService.getPopularMovie()
+                if (data.results.isNullOrEmpty()) {
+                    emit(ApiResponse.Empty)
                 }
-            } catch (e: HttpException) {
-                emit(ApiResponse.Error(e.code().toString()))
+                emit(ApiResponse.Success(data))
+
+//                val response = apiService.getPopularMovie()
+//                val data = apiService.getPopularMovie()
+//                if (response.isSuccessful) {
+//                    if (data?.results != null) {
+//                        emit(ApiResponse.Success(data))
+//                    } else {
+//                        emit(ApiResponse.Empty)
+//                    }
+//                } else {
+//                    emit(ApiResponse.Error(response.code().toString()))
+//                }
+//            } catch (e: HttpException) {
+//                emit(ApiResponse.Error(e.code().toString()))
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.message.toString()))
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     suspend fun getPopularTv(): Flow<ApiResponse<ListPopularTVResponse?>> {
@@ -59,7 +67,7 @@ class RemoteDataSource @Inject constructor(
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.message.toString()))
             }
-        }
+        }.flowOn(Dispatchers.IO)
 
     }
 
@@ -82,7 +90,7 @@ class RemoteDataSource @Inject constructor(
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.message.toString()))
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     suspend fun trendingTv(): Flow<ApiResponse<ListPopularTVResponse?>> {
@@ -104,6 +112,6 @@ class RemoteDataSource @Inject constructor(
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.message.toString()))
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzm.movieepoxy.R
 import com.mzm.movieepoxy.databinding.FragmentMovieBinding
 import com.mzm.moviegoplay.core.data.Resource
+import com.mzm.moviegoplay.core.domain.model.PopularMovie
 import com.mzm.moviegoplay.core.util.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -18,7 +19,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
 
     private val binding by viewBinding(FragmentMovieBinding::bind)
     private val viewModel: MovieViewModel by viewModels()
-    private val movieController: MovieController by lazy { MovieController(requireActivity()) }
+    private val movieController: MovieController by lazy { MovieController(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,18 +39,23 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
                 when (data) {
                     is Resource.Loading -> Timber.tag("MovieFragment").d("loading....")
                     is Resource.Success -> {
-                        data.data?.let { movieController.setPopularMovie(it.toMutableList()) }
+                        if (data.data.isNullOrEmpty()) {
+                            Timber.tag("MovieFragment").d("popularmovie : null....")
+                        } else {
+                            movieController.setPopularMovie(data.data!!.toMutableList())
+                        }
+//                        data.data?.let { movieController.setPopularMovie(it.toMutableList()) }
                     }
                     is Resource.Error -> {
-                        showError()
+                        showError(data)
                     }
                 }
             }
         }
     }
 
-    private fun showError() {
-
+    private fun showError(data: Resource.Error<List<PopularMovie>>) {
+        Timber.tag(MovieFragment::class.java.simpleName).e("error : ${data.message}")
     }
 
 }

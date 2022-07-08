@@ -6,13 +6,11 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.mzm.moviegoplay.core.BuildConfig
 import com.mzm.moviegoplay.core.data.source.remote.network.ApiService
 import com.mzm.moviegoplay.core.util.Constants
-import com.mzm.moviegoplay.core.util.NetworkConnectionInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,18 +22,19 @@ import java.util.concurrent.TimeUnit
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-    @Provides
-    fun providesInterceptor(): Interceptor {
-        return NetworkConnectionInterceptor()
-    }
+//    @Provides
+//    fun providesInterceptor(): Interceptor {
+//        return NetworkConnectionInterceptor()
+//    }
 
     @Provides
     fun provideClient(
         @ApplicationContext context: Context,
-        interceptor: Interceptor
+//        interceptor: Interceptor
     ): OkHttpClient {
         return if (BuildConfig.DEBUG) {
             OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(
                     ChuckerInterceptor.Builder(context)
                         .collector(ChuckerCollector(context))
@@ -44,14 +43,14 @@ class NetworkModule {
                         .alwaysReadResponseBody(false)
                         .build()
                 )
-                .addInterceptor(interceptor)
+//                .addInterceptor(interceptor)
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .build()
         } else {
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE))
-                .addInterceptor(interceptor)
+//                .addInterceptor(interceptor)
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .build()

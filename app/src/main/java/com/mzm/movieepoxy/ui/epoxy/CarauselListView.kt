@@ -1,6 +1,5 @@
 package com.mzm.movieepoxy.ui.epoxy
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,7 +24,7 @@ abstract class CarauselListView(
     override fun bind(holder: Holder) {
         super.bind(holder)
         Timber.tag(CarauselListView::class.java.simpleName).d("bind_model : $model")
-        holder.imgCarousel.loadImage(context, model.posterPath)
+        holder.imgCarousel.loadImage(context, model.posterPathUrl)
         holder.tvTitleCarousel.text = model.title
         holder.tvBodyCarousel.text = model.overview
     }

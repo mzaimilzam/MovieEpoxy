@@ -4,6 +4,7 @@ import com.mzm.moviegoplay.core.data.source.local.entity.PopularMovieEntity
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_movie.PopularMovieResponse
 import com.mzm.moviegoplay.core.domain.model.PopularMovie
 import com.mzm.moviegoplay.core.util.stringEmpty
+import com.mzm.moviegoplay.core.util.tmdbImageUrl
 
 /**
  * Created by Muhammad Zaim Milzam on 09/06/2022.
@@ -34,14 +35,16 @@ object DataMapperPopularMovie {
         return popularMovieEntity
     }
 
-    fun mapEntitytoModel(input : List<PopularMovieEntity>) : List<PopularMovie> =
+
+    fun mapEntitytoModel(input: List<PopularMovieEntity>): List<PopularMovie> =
         input.map {
             PopularMovie(
                 id = it.id,
                 posterPath = it.posterPath,
                 title = it.title,
                 overview = it.overview,
-                releaseDate = it.releaseDate
+                releaseDate = it.releaseDate,
+                posterPathUrl = tmdbImageUrl(it.posterPath)
             )
         }
 }

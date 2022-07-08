@@ -15,26 +15,26 @@ interface ApiService {
 
     @GET("movie/popular?language=en-US")
 //    @GET("https://api.themoviedb.org/3/movie/popular?api_key=090ef4eef9fcf1858109a3af3c5f34c1&language=en-US&page=1")
-    fun getPopularMovie(
+    suspend fun getPopularMovie(
         @Query("api_key") apiKey: String = Constants.API_KEY,
         @Query("page") page: Int = 1
-    ): Response<ListPopularMovieResponse>
+    ): ListPopularMovieResponse
 
     //    https://api.themoviedb.org/3/tv/popular?api_key=<<api_key>>&language=en-US&page=1
     @GET("tv/popular?language=en-US")
-    fun getPopularTV(
+    suspend fun getPopularTV(
         @Query("api_key") apiKey: String = Constants.API_KEY,
         @Query("page") page: Int = 1
     ): Response<ListPopularTVResponse>
 
     @GET("trending/movie/week?language=en-US")
-    fun getTrendingMovie(
+    suspend fun getTrendingMovie(
         @Query("api_key") apiKey: String = Constants.API_KEY,
         @Query("page") page: Int = 1
     ): Response<ListPopularMovieResponse>
 
     @GET("trending/movie/tv?language=en-US")
-    fun getTrendingTV(
+    suspend fun getTrendingTV(
         @Query("api_key") apiKey: String = Constants.API_KEY,
         @Query("page") page: Int = 1
     ): Response<ListPopularTVResponse>
