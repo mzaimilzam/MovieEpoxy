@@ -5,25 +5,22 @@ import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.mzm.movieepoxy.ui.epoxy.CarauselListView_
+import com.mzm.movieepoxy.ui.epoxy.CarouselMainView_
 import com.mzm.movieepoxy.ui.epoxy.HeaderListView_
+import com.mzm.moviegoplay.core.domain.model.Film
 import com.mzm.moviegoplay.core.domain.model.PopularMovie
 
 class HomeController(private val context: Context) : EpoxyController() {
 
+    private val homeCarouselFilm: MutableList<Film> = mutableListOf()
     private val popularMovie: MutableList<PopularMovie> = mutableListOf()
     private val popularSeries: MutableList<PopularMovie> = mutableListOf()
     private val trendingMovie: MutableList<PopularMovie> = mutableListOf()
     private val trendingSeries: MutableList<PopularMovie> = mutableListOf()
 
-    fun setPopularMovie(popularMovie: MutableList<PopularMovie>) {
-        this.popularMovie.clear()
-        this.popularMovie.addAll(popularMovie)
-        requestModelBuild()
-    }
-
-    fun setPopularSeries(popularSeries: MutableList<PopularMovie>) {
-        this.popularSeries.clear()
-        this.popularSeries.addAll(popularSeries)
+    fun setHomeCarouselHome(homeCarousel: MutableList<Film>) {
+        this.homeCarouselFilm.clear()
+        this.homeCarouselFilm.addAll(homeCarousel)
         requestModelBuild()
     }
 
@@ -39,8 +36,30 @@ class HomeController(private val context: Context) : EpoxyController() {
         requestModelBuild()
     }
 
+    fun setPopularMovie(popularMovie: MutableList<PopularMovie>) {
+        this.popularMovie.clear()
+        this.popularMovie.addAll(popularMovie)
+        requestModelBuild()
+    }
+
+    fun setPopularSeries(popularSeries: MutableList<PopularMovie>) {
+        this.popularSeries.clear()
+        this.popularSeries.addAll(popularSeries)
+        requestModelBuild()
+    }
+
 
     override fun buildModels() {
+        //home carousel
+        CarouselModel_()
+            .id("carousel_main_home")
+            .models(
+                this.homeCarouselFilm.map {
+                    CarouselMainView_(context)
+                        .id(it.id)
+                        .model(it)
+                }
+            ).addIf(this.homeCarouselFilm.isNotEmpty(), this)
 
         // trending movie
         HeaderListView_()

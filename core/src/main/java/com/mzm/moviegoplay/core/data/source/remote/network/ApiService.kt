@@ -1,5 +1,6 @@
 package com.mzm.moviegoplay.core.data.source.remote.network
 
+import com.mzm.moviegoplay.core.data.source.remote.response.all.ListFilmResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_movie.ListPopularMovieResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_tv.ListPopularTVResponse
 import com.mzm.moviegoplay.core.util.Constants
@@ -17,7 +18,7 @@ interface ApiService {
     suspend fun getTrendingAll(
         @Query("api_key") apiKey: String = Constants.API_KEY,
         @Query("page") page: Int = 1
-    ): ListPopularMovieResponse
+    ): ListFilmResponse
 
     @GET("movie/popular?language=en-US")
     suspend fun getPopularMovie(

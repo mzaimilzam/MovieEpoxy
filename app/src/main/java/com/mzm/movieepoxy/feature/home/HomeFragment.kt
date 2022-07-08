@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzm.movieepoxy.R
 import com.mzm.movieepoxy.databinding.FragmentHomeBinding
 import com.mzm.moviegoplay.core.data.Resource
+import com.mzm.moviegoplay.core.domain.model.Film
 import com.mzm.moviegoplay.core.domain.model.PopularMovie
 import com.mzm.moviegoplay.core.util.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,48 +29,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             rvHome.setItemSpacingDp(8)
             rvHome.setController(homeController)
         }
-        callData()
+        requestData()
         observeData()
     }
 
-    private fun callData() {
-        viewModel.setPopularMovie()
-        viewModel.setPopularSeries()
+    private fun requestData() {
+        viewModel.setTrendingFilm()
         viewModel.setTrendingMovie()
         viewModel.setTrendingSeries()
+        viewModel.setPopularMovie()
+        viewModel.setPopularSeries()
     }
 
     private fun observeData() {
         lifecycleScope.launchWhenCreated {
-            viewModel.getPopularMovie().observe(viewLifecycleOwner) { data ->
+            viewModel.getTrendingFilm().observe(viewLifecycleOwner) { data ->
                 when (data) {
                     is Resource.Loading -> Timber.tag("MovieFragment").d("loading....")
                     is Resource.Success -> {
                         if (data.data.isNullOrEmpty()) {
                             Timber.tag("MovieFragment").d("popularmovie : null....")
                         } else {
-                            homeController.setPopularMovie(data.data!!.toMutableList())
+                            homeController.setHomeCarouselHome(data.data!!.toMutableList())
                         }
-//                        data.data?.let { movieController.setPopularMovie(it.toMutableList()) }
                     }
                     is Resource.Error -> {
-                        showError(data)
-                    }
-                }
-            }
-            viewModel.getPopularSeries().observe(viewLifecycleOwner) { data ->
-                when (data) {
-                    is Resource.Loading -> Timber.tag("MovieFragment").d("loading....")
-                    is Resource.Success -> {
-                        if (data.data.isNullOrEmpty()) {
-                            Timber.tag("MovieFragment").d("popularmovie : null....")
-                        } else {
-                            homeController.setPopularSeries(data.data!!.toMutableList())
-                        }
-//                        data.data?.let { movieController.setPopularMovie(it.toMutableList()) }
-                    }
-                    is Resource.Error -> {
-                        showError(data)
+                        showErrorMainCarousel(data)
                     }
                 }
             }
@@ -82,7 +67,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         } else {
                             homeController.setTrendingMovie(data.data!!.toMutableList())
                         }
-//                        data.data?.let { movieController.setPopularMovie(it.toMutableList()) }
                     }
                     is Resource.Error -> {
                         showError(data)
@@ -98,7 +82,36 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         } else {
                             homeController.setTrendingSeries(data.data!!.toMutableList())
                         }
-//                        data.data?.let { movieController.setPopularMovie(it.toMutableList()) }
+                    }
+                    is Resource.Error -> {
+                        showError(data)
+                    }
+                }
+            }
+            viewModel.getPopularMovie().observe(viewLifecycleOwner) { data ->
+                when (data) {
+                    is Resource.Loading -> Timber.tag("MovieFragment").d("loading....")
+                    is Resource.Success -> {
+                        if (data.data.isNullOrEmpty()) {
+                            Timber.tag("MovieFragment").d("popularmovie : null....")
+                        } else {
+                            homeController.setPopularMovie(data.data!!.toMutableList())
+                        }
+                    }
+                    is Resource.Error -> {
+                        showError(data)
+                    }
+                }
+            }
+            viewModel.getPopularSeries().observe(viewLifecycleOwner) { data ->
+                when (data) {
+                    is Resource.Loading -> Timber.tag("MovieFragment").d("loading....")
+                    is Resource.Success -> {
+                        if (data.data.isNullOrEmpty()) {
+                            Timber.tag("MovieFragment").d("popularmovie : null....")
+                        } else {
+                            homeController.setPopularSeries(data.data!!.toMutableList())
+                        }
                     }
                     is Resource.Error -> {
                         showError(data)
@@ -108,6 +121,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
         }
+    }
+
+    private fun showErrorMainCarousel(data: Resource.Error<List<Film>>) {
+        Timber.tag(HomeFragment::class.java.simpleName).e("error : ${data.message}")
     }
 
     private fun showError(data: Resource.Error<List<PopularMovie>>) {

@@ -10,7 +10,6 @@ import com.mzm.movieepoxy.R
 import com.mzm.movieepoxy.utils.KotlinEpoxyHolder
 import com.mzm.movieepoxy.utils.loadImage
 import com.mzm.moviegoplay.core.domain.model.PopularMovie
-import timber.log.Timber
 
 
 @EpoxyModelClass(layout = R.layout.ep_carausel_list_view)
@@ -23,7 +22,6 @@ abstract class CarauselListView(
 
     override fun bind(holder: Holder) {
         super.bind(holder)
-        Timber.tag(CarauselListView::class.java.simpleName).d("bind_model : $model")
         holder.imgCarousel.loadImage(context, model.posterPathUrl)
         holder.tvTitleCarousel.text = model.title
         holder.tvBodyCarousel.text = model.overview

@@ -1,6 +1,7 @@
 package com.mzm.moviegoplay.core.domain.repository
 
 import com.mzm.moviegoplay.core.data.Resource
+import com.mzm.moviegoplay.core.domain.model.Film
 import com.mzm.moviegoplay.core.domain.model.PopularMovie
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface DataSource {
 
-    fun getTrendingAll(): Flow<Resource<List<PopularMovie>>>
+    fun getTrendingAll(): Flow<Resource<List<Film>>>
 
     fun getPopularMovie(): Flow<Resource<List<PopularMovie>>>
 

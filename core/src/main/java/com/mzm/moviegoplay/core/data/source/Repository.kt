@@ -5,16 +5,16 @@ import com.mzm.moviegoplay.core.data.Resource
 import com.mzm.moviegoplay.core.data.source.local.room.LocalDataSource
 import com.mzm.moviegoplay.core.data.source.remote.ApiResponse
 import com.mzm.moviegoplay.core.data.source.remote.RemoteDataSource
+import com.mzm.moviegoplay.core.data.source.remote.response.all.FilmResponse
+import com.mzm.moviegoplay.core.data.source.remote.response.all.ListFilmResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_movie.ListPopularMovieResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_movie.PopularMovieResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_tv.ListPopularTVResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_tv.PopularTvResponse
+import com.mzm.moviegoplay.core.domain.model.Film
 import com.mzm.moviegoplay.core.domain.model.PopularMovie
 import com.mzm.moviegoplay.core.domain.repository.DataSource
-import com.mzm.moviegoplay.core.util.datamapper.DataMapperPopularMovie
-import com.mzm.moviegoplay.core.util.datamapper.DataMapperPopularTV
-import com.mzm.moviegoplay.core.util.datamapper.DataMapperTrendingMovie
-import com.mzm.moviegoplay.core.util.datamapper.DataMapperTrendingTV
+import com.mzm.moviegoplay.core.util.datamapper.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -29,27 +29,28 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : DataSource {
-    override fun getTrendingAll(): Flow<Resource<List<PopularMovie>>> =
-        object : NetworkBoundResource<List<PopularMovie>, ListPopularMovieResponse>() {
-            override fun loadFromDB(): Flow<List<PopularMovie>> {
-                return localDataSource.getPopularMovie().map {
-                    DataMapperPopularMovie.mapEntitytoModel(it)
+
+    override fun getTrendingAll(): Flow<Resource<List<Film>>> =
+        object : NetworkBoundResource<List<Film>, ListFilmResponse>() {
+            override fun loadFromDB(): Flow<List<Film>> {
+                return localDataSource.getFilm().map {
+                    DataMapperTrendingFilm.mapEntitytoModel(it)
                 }
             }
 
-            override fun shouldFetch(data: List<PopularMovie>?): Boolean = true
+            override fun shouldFetch(data: List<Film>?): Boolean = true
 
-            override suspend fun createCall(): Flow<ApiResponse<ListPopularMovieResponse>> =
-                remoteDataSource.popularMovie() as Flow<ApiResponse<ListPopularMovieResponse>>
+            override suspend fun createCall(): Flow<ApiResponse<ListFilmResponse>> =
+                remoteDataSource.trendingAll() as Flow<ApiResponse<ListFilmResponse>>
 
-            override suspend fun saveCallResult(data: ListPopularMovieResponse) {
+            override suspend fun saveCallResult(data: ListFilmResponse) {
                 val submit =
-                    DataMapperPopularMovie.mapResponseToEntity(data.results as List<PopularMovieResponse>)
-                localDataSource.insertAndDeletePopularMovie(submit)
+                    DataMapperTrendingFilm.mapResponseToEntity(data.results as List<FilmResponse>)
+                localDataSource.insertAndDeleteFilm(submit)
             }
 
             override suspend fun emptyDataBase() {
-                localDataSource.deletePopularMovie()
+                localDataSource.deleteFilm()
             }
 
         }.asFlow()

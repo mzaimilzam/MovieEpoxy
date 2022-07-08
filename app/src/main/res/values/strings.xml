@@ -4,4 +4,6 @@
     <string name="movie">Movie</string>
   <string name="series">Series</string>
     <string name="image_description">image poster</string>
+    <string name="play">Play</string>
+  <string name="mylist">MyList</string>
 </resources>

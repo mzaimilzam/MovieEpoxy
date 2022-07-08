@@ -1,6 +1,7 @@
 package com.mzm.moviegoplay.core.data.source.remote
 
 import com.mzm.moviegoplay.core.data.source.remote.network.ApiService
+import com.mzm.moviegoplay.core.data.source.remote.response.all.ListFilmResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_movie.ListPopularMovieResponse
 import com.mzm.moviegoplay.core.data.source.remote.response.popular_tv.ListPopularTVResponse
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,7 @@ class RemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun trendingAll(): Flow<ApiResponse<ListPopularMovieResponse?>> {
+    suspend fun trendingAll(): Flow<ApiResponse<ListFilmResponse?>> {
         return flow {
             try {
                 val data = apiService.getTrendingAll()
