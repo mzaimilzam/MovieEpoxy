@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/drawable/ic_image_search_72.xml" value="0.292" />
+        <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/font/font.xml" value="0.38564102564102565" />
         <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/activity_main.xml" value="0.23055555555555557" />
+        <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/ep__carausel_list_view.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/ep_header_list_view.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/fragment_home.xml" value="0.1757852077001013" />
-        <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/fragment_movie.xml" value="0.1757852077001013" />
+        <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/fragment_movie.xml" value="0.25" />
         <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/fragment_series.xml" value="0.3625" />
         <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/layout/fragment_tv.xml" value="0.1757852077001013" />
         <entry key="..\:/Users/muhammad.milzam/Projects/MyProjects/android/MovieEpoxy/app/src/main/res/menu/bottom_nav_menu.xml" value="0.22" />
