@@ -1,10 +1,7 @@
 package com.mzm.moviegoplay.core.data.source.local.room.dao
 
 import androidx.room.*
-import com.mzm.moviegoplay.core.data.source.local.entity.PopularMovieEntity
-import com.mzm.moviegoplay.core.data.source.local.entity.PopularTVEntity
-import com.mzm.moviegoplay.core.data.source.local.entity.TrendingMovieEntity
-import com.mzm.moviegoplay.core.data.source.local.entity.TrendingTVEntity
+import com.mzm.moviegoplay.core.data.source.local.entity.*
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -14,6 +11,22 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FilmDao {
+
+    //film
+    @Query("SELECT * FROM film_entity ORDER BY id ASC ")
+    fun getFilm(): Flow<List<FilmEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addFilm(film: List<FilmEntity>)
+
+    @Query("DELETE FROM film_entity")
+    suspend fun deleteFilm()
+
+    @Transaction
+    suspend fun insertAndDeleteFilm(film: List<FilmEntity>) {
+        deleteFilm()
+        addFilm(film)
+    }
 
     // popular movie
     @Query("SELECT * FROM popular_movie_entity ORDER BY id ASC ")

@@ -29,6 +29,31 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : DataSource {
+    override fun getTrendingAll(): Flow<Resource<List<PopularMovie>>> =
+        object : NetworkBoundResource<List<PopularMovie>, ListPopularMovieResponse>() {
+            override fun loadFromDB(): Flow<List<PopularMovie>> {
+                return localDataSource.getPopularMovie().map {
+                    DataMapperPopularMovie.mapEntitytoModel(it)
+                }
+            }
+
+            override fun shouldFetch(data: List<PopularMovie>?): Boolean = true
+
+            override suspend fun createCall(): Flow<ApiResponse<ListPopularMovieResponse>> =
+                remoteDataSource.popularMovie() as Flow<ApiResponse<ListPopularMovieResponse>>
+
+            override suspend fun saveCallResult(data: ListPopularMovieResponse) {
+                val submit =
+                    DataMapperPopularMovie.mapResponseToEntity(data.results as List<PopularMovieResponse>)
+                localDataSource.insertAndDeletePopularMovie(submit)
+            }
+
+            override suspend fun emptyDataBase() {
+                localDataSource.deletePopularMovie()
+            }
+
+        }.asFlow()
+
 
     override fun getPopularMovie(): Flow<Resource<List<PopularMovie>>> =
         object : NetworkBoundResource<List<PopularMovie>, ListPopularMovieResponse>() {

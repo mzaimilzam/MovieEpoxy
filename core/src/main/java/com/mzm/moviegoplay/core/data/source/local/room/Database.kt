@@ -14,6 +14,7 @@ import com.mzm.moviegoplay.core.util.Constants
 
 @Database(
     entities = [
+        FilmEntity::class,
         PopularMovieEntity::class,
         PopularMovieRemoteKey::class,
         PopularTVEntity::class,

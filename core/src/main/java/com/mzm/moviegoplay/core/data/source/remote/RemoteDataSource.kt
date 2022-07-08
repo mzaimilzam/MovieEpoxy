@@ -20,6 +20,20 @@ class RemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
+    suspend fun trendingAll(): Flow<ApiResponse<ListPopularMovieResponse?>> {
+        return flow {
+            try {
+                val data = apiService.getTrendingAll()
+                if (data.results.isNullOrEmpty()) {
+                    emit(ApiResponse.Empty)
+                }
+                emit(ApiResponse.Success(data))
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.message.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
     suspend fun popularMovie(): Flow<ApiResponse<ListPopularMovieResponse?>> {
         return flow {
             try {
@@ -28,20 +42,6 @@ class RemoteDataSource @Inject constructor(
                     emit(ApiResponse.Empty)
                 }
                 emit(ApiResponse.Success(data))
-
-//                val response = apiService.getPopularMovie()
-//                val data = apiService.getPopularMovie()
-//                if (response.isSuccessful) {
-//                    if (data?.results != null) {
-//                        emit(ApiResponse.Success(data))
-//                    } else {
-//                        emit(ApiResponse.Empty)
-//                    }
-//                } else {
-//                    emit(ApiResponse.Error(response.code().toString()))
-//                }
-//            } catch (e: HttpException) {
-//                emit(ApiResponse.Error(e.code().toString()))
             } catch (e: Exception) {
                 emit(ApiResponse.Error(e.message.toString()))
             }

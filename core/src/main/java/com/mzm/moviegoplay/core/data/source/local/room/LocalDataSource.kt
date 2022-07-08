@@ -1,9 +1,6 @@
 package com.mzm.moviegoplay.core.data.source.local.room
 
-import com.mzm.moviegoplay.core.data.source.local.entity.PopularMovieEntity
-import com.mzm.moviegoplay.core.data.source.local.entity.PopularTVEntity
-import com.mzm.moviegoplay.core.data.source.local.entity.TrendingMovieEntity
-import com.mzm.moviegoplay.core.data.source.local.entity.TrendingTVEntity
+import com.mzm.moviegoplay.core.data.source.local.entity.*
 import com.mzm.moviegoplay.core.data.source.local.room.dao.FilmDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -17,6 +14,13 @@ import javax.inject.Singleton
 class LocalDataSource @Inject constructor(
     private val filmDao: FilmDao
 ) {
+
+    // film
+    fun getFilm(): Flow<List<FilmEntity>> = filmDao.getFilm()
+    suspend fun insertAndDeleteFilm(data: List<FilmEntity>) =
+        filmDao.addFilm(data)
+    suspend fun deleteFilm() = filmDao.deleteFilm()
+
 
     // popular movie
     fun getPopularMovie(): Flow<List<PopularMovieEntity>> = filmDao.getAllPopularMovie()

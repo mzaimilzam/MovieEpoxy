@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
  */
 interface DataSource {
 
+    fun getTrendingAll(): Flow<Resource<List<PopularMovie>>>
+
     fun getPopularMovie(): Flow<Resource<List<PopularMovie>>>
 
     fun getPopularTv(): Flow<Resource<List<PopularMovie>>>

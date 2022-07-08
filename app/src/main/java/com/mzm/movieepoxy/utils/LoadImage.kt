@@ -30,7 +30,7 @@ fun ImageView.loadImage(
 
     val myOptions = RequestOptions()
         .centerCrop()
-        .override(100, 100)
+        .override(1024, 1920)
 
     Glide.with(this)
         .load(url)
