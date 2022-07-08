@@ -25,7 +25,7 @@ import javax.inject.Singleton
  * linkedin : Muhammad Zaim Milzam
  */
 @Singleton
-class Respository @Inject constructor(
+class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : DataSource {

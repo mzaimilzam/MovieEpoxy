@@ -9,11 +9,11 @@ plugins {
 apply from: '../shared_dependencies.gradle'
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         minSdk 21
-        targetSdk 31
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -38,8 +38,8 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation "com.google.android.material:material:$material_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

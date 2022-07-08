@@ -14,7 +14,6 @@ import com.mzm.moviegoplay.core.domain.model.PopularMovie
 import timber.log.Timber
 
 
-@SuppressLint("NonConstantResourceId")
 @EpoxyModelClass(layout = R.layout.ep_carausel_list_view)
 abstract class CarauselListView(
     private val context: Context

@@ -8,7 +8,6 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.mzm.movieepoxy.R
 import com.mzm.movieepoxy.utils.KotlinEpoxyHolder
 
-@SuppressLint("NonConstantResourceId")
 @EpoxyModelClass(layout = R.layout.ep_header_list_view)
 abstract class HeaderListView : EpoxyModelWithHolder<HeaderListView.Holder>() {
 

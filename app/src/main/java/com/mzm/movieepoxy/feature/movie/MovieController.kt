@@ -35,5 +35,6 @@ class MovieController(private val context: Context) : EpoxyController() {
                         .model(it)
                 }
             )
+            .addIf(this.popularMovie.isNotEmpty(), this)
     }
 }
