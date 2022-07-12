@@ -29,12 +29,29 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
             rvMovie.setController(movieController)
         }
 
+        viewModel.setTrendingMovie()
         viewModel.setPopularMovie()
         observePopularMovie()
     }
 
     private fun observePopularMovie() {
         lifecycleScope.launchWhenCreated {
+            viewModel.getTrendingMovie().observe(viewLifecycleOwner) { data ->
+                when (data) {
+                    is Resource.Loading -> Timber.tag("MovieFragment").d("loading....")
+                    is Resource.Success -> {
+                        if (data.data.isNullOrEmpty()) {
+                            Timber.tag("MovieFragment").d("popularmovie : null....")
+                        } else {
+                            movieController.setTrendingMovie(data.data!!.toMutableList())
+                        }
+                    }
+                    is Resource.Error -> {
+                        showError(data)
+                    }
+                }
+            }
+
             viewModel.getPopularMovie().observe(viewLifecycleOwner) { data ->
                 when (data) {
                     is Resource.Loading -> Timber.tag("MovieFragment").d("loading....")
@@ -44,7 +61,6 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
                         } else {
                             movieController.setPopularMovie(data.data!!.toMutableList())
                         }
-//                        data.data?.let { movieController.setPopularMovie(it.toMutableList()) }
                     }
                     is Resource.Error -> {
                         showError(data)

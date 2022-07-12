@@ -9,27 +9,28 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.mzm.movieepoxy.R
 import com.mzm.movieepoxy.utils.KotlinEpoxyHolder
 import com.mzm.movieepoxy.utils.loadImage
-import com.mzm.moviegoplay.core.domain.model.Film
+import com.mzm.moviegoplay.core.domain.model.PopularMovie
 
-@EpoxyModelClass(layout = R.layout.ep_carousel_home)
-abstract class CarouselMainView(
+@EpoxyModelClass(layout = R.layout.ep_list_film)
+abstract class ItemListView(
     private val context: Context,
-) : EpoxyModelWithHolder<CarouselMainView.Holder>() {
+) : EpoxyModelWithHolder<ItemListView.Holder>() {
 
     @EpoxyAttribute
-    lateinit var model: Film
+    lateinit var model: PopularMovie
 
     override fun bind(holder: Holder) {
         super.bind(holder)
         holder.image.loadImage(context, model.posterPathUrl)
         holder.title.text = model.title
         holder.genre.text = model.overview
+        holder.date.text = model.releaseDate
     }
 
     inner class Holder : KotlinEpoxyHolder() {
-        val number by bind<TextView>(R.id.tv_number_film)
-        val image by bind<ImageView>(R.id.iv_carousel_home)
-        val title by bind<TextView>(R.id.tv_title_carousel_home)
-        val genre by bind<TextView>(R.id.tv_genre_carousel_home)
+        val image by bind<ImageView>(R.id.iv_item_list)
+        val title by bind<TextView>(R.id.tv_title_item_list)
+        val genre by bind<TextView>(R.id.tv_genre_item_list)
+        val date by bind<TextView>(R.id.tv_date_item_list)
     }
 }

@@ -15,7 +15,19 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val movieUsecase: MovieUsecase) : ViewModel() {
 
+    private val trendingMovie = MutableLiveData<Resource<List<PopularMovie>>>()
     private val popularMovie = MutableLiveData<Resource<List<PopularMovie>>>()
+
+
+    fun setTrendingMovie() {
+        viewModelScope.launch {
+            movieUsecase.getTrendingMovie().collectLatest {
+                trendingMovie.postValue(it)
+            }
+        }
+    }
+
+    fun getTrendingMovie(): LiveData<Resource<List<PopularMovie>>> = trendingMovie
 
     fun setPopularMovie() {
         viewModelScope.launch {

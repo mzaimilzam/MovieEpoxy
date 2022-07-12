@@ -7,8 +7,8 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.mzm.movieepoxy.R
 import com.mzm.movieepoxy.utils.KotlinEpoxyHolder
 
-@EpoxyModelClass(layout = R.layout.ep_header_list_view)
-abstract class HeaderListView : EpoxyModelWithHolder<HeaderListView.Holder>() {
+@EpoxyModelClass(layout = R.layout.ep_header_item_list_view)
+abstract class HeaderItemListtView : EpoxyModelWithHolder<HeaderItemListtView.Holder>() {
 
     @EpoxyAttribute
     lateinit var title: String
@@ -19,7 +19,7 @@ abstract class HeaderListView : EpoxyModelWithHolder<HeaderListView.Holder>() {
     }
 
     inner class Holder : KotlinEpoxyHolder() {
-        val tvTittle by bind<AppCompatTextView>(R.id.header_list_title)
+        val tvTittle by bind<AppCompatTextView>(R.id.header_item_list_title)
 
     }
 
