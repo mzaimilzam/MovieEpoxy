@@ -16,6 +16,8 @@ buildscript {
         epoxy_databinding_version = '3.11.0'
         material_version = '1.6.0'
         junit_version = '4.13.2'
+
+        lottie_version = "5.2.0"
     }
 
     repositories {

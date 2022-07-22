@@ -53,15 +53,10 @@ class RemoteDataSource @Inject constructor(
         return flow {
             try {
                 val response = apiService.getPopularTV()
-                val data = apiService.getPopularTV().body()
-                if (response.isSuccessful) {
-                    if (data?.results != null) {
-                        emit(ApiResponse.Success(data))
-                    } else {
-                        emit(ApiResponse.Empty)
-                    }
+                if (response.results.isNullOrEmpty()) {
+                    emit(ApiResponse.Empty)
                 } else {
-                    emit(ApiResponse.Error(response.code().toString()))
+                    emit(ApiResponse.Success(response))
                 }
             } catch (e: HttpException) {
                 emit(ApiResponse.Error(e.code().toString()))
@@ -76,15 +71,10 @@ class RemoteDataSource @Inject constructor(
         return flow {
             try {
                 val response = apiService.getTrendingMovie()
-                val data = apiService.getTrendingMovie().body()
-                if (response.isSuccessful) {
-                    if (data?.results != null) {
-                        emit(ApiResponse.Success(data))
-                    } else {
-                        emit(ApiResponse.Empty)
-                    }
+                if (response.results.isNullOrEmpty()) {
+                    emit(ApiResponse.Empty)
                 } else {
-                    emit(ApiResponse.Error(response.code().toString()))
+                    emit(ApiResponse.Success(response))
                 }
             } catch (e: HttpException) {
                 emit(ApiResponse.Error(e.code().toString()))
@@ -98,15 +88,10 @@ class RemoteDataSource @Inject constructor(
         return flow {
             try {
                 val response = apiService.getTrendingTV()
-                val data = apiService.getTrendingTV().body()
-                if (response.isSuccessful) {
-                    if (data?.results != null) {
-                        emit(ApiResponse.Success(data))
-                    } else {
-                        emit(ApiResponse.Empty)
-                    }
+                if (response.results.isNullOrEmpty()) {
+                    emit(ApiResponse.Empty)
                 } else {
-                    emit(ApiResponse.Error(response.code().toString()))
+                    emit(ApiResponse.Success(response))
                 }
             } catch (e: HttpException) {
                 emit(ApiResponse.Error(e.code().toString()))

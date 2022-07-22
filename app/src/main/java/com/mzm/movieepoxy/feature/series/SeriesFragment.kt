@@ -1,34 +1,82 @@
 package com.mzm.movieepoxy.feature.series
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzm.movieepoxy.R
+import com.mzm.movieepoxy.databinding.FragmentSeriesBinding
+import com.mzm.movieepoxy.feature.movie.MovieController
+import com.mzm.movieepoxy.feature.movie.MovieFragment
+import com.mzm.moviegoplay.core.data.Resource
+import com.mzm.moviegoplay.core.domain.model.PopularMovie
+import com.mzm.moviegoplay.core.util.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
-class SeriesFragment : Fragment() {
+class SeriesFragment : Fragment(R.layout.fragment_series) {
 
-    companion object {
-        fun newInstance() = SeriesFragment()
+
+    private val binding by viewBinding(FragmentSeriesBinding::bind)
+    private val viewmodels: SeriesViewModel by viewModels()
+    private val movieController: MovieController by lazy { MovieController(requireContext()) }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding) {
+            rvSeries.layoutManager = LinearLayoutManager(requireContext())
+            rvSeries.setItemSpacingDp(8)
+            rvSeries.setController(movieController)
+        }
+
+        viewmodels.setPopularSeries()
+        viewmodels.setTrendingSeries()
+
+        obserever()
     }
 
-    private lateinit var viewModel: SeriesViewModel
+    private fun obserever() {
+        lifecycleScope.launchWhenCreated {
+            viewmodels.getTrendeingSeries().observe(viewLifecycleOwner) { data ->
+                when (data) {
+                    is Resource.Loading -> Timber.tag("SeriesFragment").d("loading....")
+                    is Resource.Success -> {
+                        if (data.data.isNullOrEmpty()) {
+                            Timber.tag("SeriesFragment").d("popularmovie : null....")
+                        } else {
+                            movieController.setTrendingMovie(data.data!!.toMutableList())
+                        }
+                    }
+                    is Resource.Error -> {
+                        showError(data)
+                    }
+                }
+            }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_series, container, false)
+            viewmodels.getPopularSeries().observe(viewLifecycleOwner) { data ->
+                when (data) {
+                    is Resource.Loading -> Timber.tag("SeriesFragment").d("loading....")
+                    is Resource.Success -> {
+                        if (data.data.isNullOrEmpty()) {
+                            Timber.tag("SeriesFragment").d("popularmovie : null....")
+                        } else {
+                            movieController.setPopularMovie(data.data!!.toMutableList())
+                        }
+                    }
+                    is Resource.Error -> {
+                        showError(data)
+                    }
+                }
+            }
+        }
+
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SeriesViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun showError(data: Resource.Error<List<PopularMovie>>) {
+        Timber.tag(MovieFragment::class.java.simpleName).e("error : ${data.message}")
     }
 
 }

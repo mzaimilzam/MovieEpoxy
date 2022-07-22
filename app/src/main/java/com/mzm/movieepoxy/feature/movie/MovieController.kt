@@ -31,8 +31,8 @@ class MovieController(private val context: Context) : EpoxyController() {
     override fun buildModels() {
 
         HeaderListView_()
-            .id("Header_trending_CaraouselMovie")
-            .title("Trending")
+            .id("Header_popular_CaraouselMovie")
+            .title("Popular")
             .addIf(this.trendingMovie.isNotEmpty(), this)
 
         CarouselModel_()
